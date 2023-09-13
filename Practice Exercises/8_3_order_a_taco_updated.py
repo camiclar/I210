@@ -20,10 +20,10 @@ if is_veg == "Y":
     proteins = veggies
 else:
     proteins = meats
-    
-print("\tChoose 1 for", proteins[0])
-print("\tChoose 2 for", proteins[1])
-print("\tChoose 3 for", proteins[2])
+
+for i in range(len(proteins)):
+    print(f"\tChoose {i + 1} for {proteins[i]}")
+
 
 choice = input("\nWhich protein would you like? ")
 
@@ -32,9 +32,8 @@ protein = proteins[int(choice) - 1]
 # choose a topping
 print("\n Now choose a topping:")
 
-print("\tChoose 1 for", toppings[0])
-print("\tChoose 2 for", toppings[1])
-print("\tChoose 3 for", toppings[2])
+for j in range(len(toppings)):
+    print(f"\tChoose {j + 1} for {toppings[j]}")
 
 top_choice = input("\nWhich topping would you like? ")
 
