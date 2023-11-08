@@ -39,7 +39,7 @@ def load_data(file_name):
         return unique_songs
 
     except FileNotFoundError:
-        print(f"Could not find file {file_name}")
+        print(f"Could not find file \"{file_name}\"")
         return []
             
 # PART 2: Audio analysis function, sort function, table_print function
