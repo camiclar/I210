@@ -1,12 +1,9 @@
 import my_mod
-
     
 # PART 4: Main
 
-print("Welcome to Spotify Data Analysis!\n")
-
-file_path = input("Enter the file path for your data: ") #TODO: Uncomment when done testing
-#file_path = "spotify_data_2022.csv" # TODO: Delete when done testing
+#file_path = input("Enter the file path for your data: ") #TODO: Uncomment when done testing
+file_path = "spotify_data_2022.csv" # TODO: Delete when done testing
 
 # Issues:
 # : or ;
@@ -16,12 +13,14 @@ file_path = input("Enter the file path for your data: ") #TODO: Uncomment when d
 while not my_mod.load_data(file_path):
     file_path = input("\nPlease try again: ")
 
-data = my_mod.load_data(file_path)
+data = my_mod.load_data(file_path) # Load data
 
 # Menu
+print("Welcome to Spotify Data Analysis!\n")
+
 while True:
     # Print out Menu
-    print("\n\tType '1' for audio analysis\n")
+    print("\tType '1' for audio analysis\n")
     print("\tType '2' for artist info\n")
     print("\tType 'quit' to exit the program\n")
 
@@ -67,12 +66,15 @@ while True:
                     pass
 
         # Print data
-        my_mod.track_analysis(data, feature, num_tracks)
-
+        my_mod.track_analysis(data, feature, num_tracks)    
 
     # Allow the user to perform an artist info analysis (BONUS)
+    elif answer == "2":
+        print("\nSorry, this feature isn't implemented yet!")
 
     # Handle errors as needed!
+    else:
+        print("Invalid response. Please try again.")
         
     print()
-                                 
+
