@@ -16,29 +16,29 @@ def load_data(file_name):
                     songs.append(row)
 
         # Remove duplicate entries
-        unique_songs = []
-        track_names = []
+        unique_songs = [] # Contains dictionaries that represent songs
+        track_names = [] # Contains song names as strings. Keeps track of which songs have been added to unique_songs
         
         for song in songs:
-            if song["track_name"] not in track_names:
-                track_names.append(song["track_name"])
-                unique_songs.append(song)
+            if song["track_name"] not in track_names: # If song's name hasn't been added to track_names
+                track_names.append(song["track_name"]) # Add song's name to track_names
+                unique_songs.append(song) # Add song dictionary to unique_songs
 
-        # Convert numerical values to correct data types
+        # Convert numerical values to correct data types (int or float)
         for song in unique_songs:
-            for feature, value in song.items():
+            for feature, value in song.items(): # Loop through each value and feature in each song
                 try:
-                    song[feature] = int(value)
+                    song[feature] = int(value) # Try converting value to int
                 except ValueError:
                     try:
-                        song[feature] = float(value)
+                        song[feature] = float(value) # Try converting value to float
                     except ValueError:
-                        pass
+                        pass # Leave value as string
         
         # Return it!
         return unique_songs
 
-    except FileNotFoundError:
+    except FileNotFoundError: # Returns empty list if invalid file path
         print(f"Could not find file \"{file_name}\"")
         return []
             
@@ -61,22 +61,23 @@ def track_analysis(track_list, feature, cutoff = 20):
         table_data = [track_data[i] for i in range(0, cutoff)]
 
         # Print it as a table using table_print()
-        table_print(["track_name", "artist_name", feature], table_data)
+        table_print(["track_name", "artist_name", feature], table_data, 22)
 
     except KeyError:
-        print(f"No feature called {feature}")
+        print(f"No feature called \"{feature}\"")
 
 
 # PART 4: BONUS - Artist info function
 def artist_info(track_list, artist_name):
     # Populate and display info about the selected artist
-
-    # You can remove this when you start working on this function
     pass
 
-# Implementation of Selection Sort or Insertion Sort for Part 2 and Part 3
+# Implementation of Insertion Sort for Part 2 and Part 3
 def insertion_sort(nested_list, pos):
     # Sort the list
+
+    # Sorting by feature
+    # Mostly taken from Zybooks Figure 16.7.1
     for i in range(1, len(nested_list)):
         j = i
 
@@ -86,22 +87,54 @@ def insertion_sort(nested_list, pos):
             nested_list[j - 1] = temp
             j = j - 1
 
+    # Sorts items with equal features alphabetically by track_name
+    for i in range(1, len(nested_list)):
+        j = i
+
+        while j > 0 and str(nested_list[j][0]) > str(nested_list[j - 1][0]) and nested_list[j][pos] == nested_list[j - 1][pos]:
+            temp = nested_list[j]
+            nested_list[j] = nested_list[j - 1]
+            nested_list[j - 1] = temp
+            j = j - 1
+    
     # Return it
     return nested_list
 
 # Implementation of Table Print for multi-column tables.
-# You can have as many header columns as needed.
-# Default width for columns is 30.
 def table_print(headers, data, width = 30):
-    # Modify the one from class to work on 3 columns instead of just 2
+    # Prints data dynamically based on number of columns provided (could print more than 3 columns if needed)
+    # and length of data values (adds more width if one value is very long)
 
-    # Print the Headers
-    print(f"{headers[0]:<{width}}{headers[1]:<{width}}{headers[2]:<{width}}")
-    print("-" * (width * 3))
-
-    # Print the Data
+    column_widths = [0 for i in range(len(headers))] # Initialize list that stores column widths
     for item in data:
-        print(f"{item[0]:<{width}}{item[1]:<{width}}{item[2]:<{width}}")
+        for i in range(len(item)):
+            if len(str(item[i])) > column_widths[i]: # Sets each column's width to the length of the longest value
+                column_widths[i] = len(str(item[i]))
+
+    total_width = 0 # Initialize total table width (for dashed line)
+    for i in range(len(column_widths)):
+        padding = 3 # Amount of space between columns
+    
+        if column_widths[i] + padding < width:
+            column_widths[i] = width # If no values longer than default width, keep default width
+        else:
+            column_widths[i] += padding # If value is longer than default width, use that + padding
+
+        total_width += column_widths[i]
+
+    # Print headers
+    for i in range(len(headers)):
+        print(f"{headers[i]:<{column_widths[i]}}", end="")
+    print()
+
+    # Print dashed line
+    print("-" * total_width)
+
+    # Print values
+    for item in data:
+        for i in range(len(item)):
+            print(f"{item[i]:<{column_widths[i]}}", end="")
+        print()
 
 
 # Test code for the Module
