@@ -50,7 +50,6 @@ def track_analysis(track_list, feature, cutoff = 20):
 
         # Use track_list to compile the data you need
         for track in track_list:
-            
             track_data.append((track["track_name"], track["artist_name"], track[feature]))
         
         # Sort it
@@ -70,7 +69,105 @@ def track_analysis(track_list, feature, cutoff = 20):
 # PART 4: BONUS - Artist info function
 def artist_info(track_list, artist_name):
     # Populate and display info about the selected artist
-    pass
+
+    # Variables
+    artist_in_data = False
+    num_followers = 0
+    popularity = 0
+    tracks = []
+    genres = []
+
+    artist_total_energy = 0.0
+    artist_total_valence = 0.0
+    all_total_energy = 0.0
+    all_total_valence = 0.0
+
+
+    # Process initial data
+    for track in track_list:
+        all_total_energy += track["track_energy"]
+        all_total_valence += track["track_valence"]
+        
+        if track["artist_name"] == artist_name:
+            artist_in_data = True # Checking to see if artist_name is valid
+            num_followers = track["artist_followers"] # Number of followers
+            popularity = track["artist_popularity"] # Popularity score
+            
+            genres = track["artist_genres"].split(",") # Genres
+            for i in range(len(genres)):
+                genres[i] = genres[i].strip()
+
+            tracks.append(track) # Tracks
+
+            # Energy and valence
+            artist_total_energy += track["track_energy"]
+            artist_total_valence += track["track_valence"]
+
+    if not artist_in_data:
+        print(f"Couldn't find artist \"{artist_name}.\"\n")
+
+    else:
+        # Header
+        header = f"{artist_name}'s Spotify Snapshot"
+        print(header)
+        print("-" * len(header))
+
+        # Number of Followers
+        print(f"# Followers: {num_followers}")
+
+        # Popularity score
+        print(f"Popularity score: {popularity}")
+
+        # Genres
+        print("Genres: ", end="")
+        for i in range(len(genres)):
+            if i < len(genres) - 1:
+                print(genres[i], end=", ")
+            else:
+                print(genres[i])
+
+        # Tracks
+        print("\nTracks released:")
+
+        for track in tracks:
+            name = "track_name"
+            print(f"\t'{track[name]}'")
+        print()
+
+        # Most popular song
+        track_popularity_data = []
+        for track in tracks: # Create list of tuples for insertion sort
+            track_popularity_data.append((track["track_name"], track["track_popularity"]))
+        insertion_sort(track_popularity_data, 1) # Sort songs based on popularity
+        track_popularity_data.reverse()
+
+        print(f"Most popular song: {track_popularity_data[0][0]}\n") # Print song at top of popularity list
+
+        # Energy and valence ratings
+        artist_avg_energy = artist_total_energy / len(tracks) # Calculate artist's average
+        artist_avg_valence = artist_total_valence / len(tracks)
+
+        all_avg_energy = all_total_energy / len(track_list) # Calculate average across all tracks
+        all_avg_valence = all_total_valence / len(track_list)
+        
+        # Print results
+        print(f"With an energy score of {artist_avg_energy:.3f}, {artist_name}'s music is ", end="")
+        if artist_avg_energy > all_avg_energy:
+            print("more energetic than average.")
+        elif artist_avg_energy < all_avg_energy:
+            print("less energetic than average.")
+        else:
+            print("equal to the average.")
+        
+        print(f"With a valence score of {artist_avg_valence:.3f}, {artist_name}'s music is ", end="")
+        if artist_avg_valence > all_avg_valence:
+            print("happier than average.")
+        elif artist_avg_valence < all_avg_valence:
+            print("more sad than average.")
+        else:
+            print("equal to the average.")
+            
+        print()
 
 # Implementation of Insertion Sort for Part 2 and Part 3
 def insertion_sort(nested_list, pos):
@@ -159,3 +256,6 @@ if __name__ == "__main__":
     # TEST PART 2C
     track_analysis(spotify_data_test, "track_popularity", 10)
     print()
+
+    # TEST PART 4
+    artist_info(spotify_data_test, "Kendrick Lamar")

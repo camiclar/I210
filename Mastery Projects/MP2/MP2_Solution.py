@@ -21,10 +21,10 @@ except Exception:
             pass
 
 # Menu
-print("Welcome to Spotify Data Analysis!\n")
-
+print()
 while True:
     # Print out Menu
+    print("Welcome to Spotify Data Analysis!\n")
     print("\tType '1' for audio analysis\n")
     print("\tType '2' for artist info\n")
     print("\tType 'quit' to exit the program\n")
@@ -46,7 +46,7 @@ while True:
         
         # Error handling for track feature
         while feature not in data[0].keys():
-            feature = input(f"No feature called {feature}. Please try again: ")
+            feature = input(f"No feature called \"{feature}.\" Please try again: ")
 
         # Set number of tracks to display
         num_tracks = 0
@@ -71,15 +71,16 @@ while True:
 
         # Print data
         print()
-        my_mod.track_analysis(data, feature, num_tracks)    
+        my_mod.track_analysis(data, feature, num_tracks)
+        print()
 
     # Allow the user to perform an artist info analysis (BONUS)
     elif answer == "2":
-        print("\nSorry, this feature isn't implemented yet!")
+        artist_name = input("\nWhich artist would you like to pull information on? ")
+        print()
+        my_mod.artist_info(data, artist_name)
 
     # Handle errors as needed!
     else:
-        print("Invalid response. Please try again.")
-        
-    print()
+        print("Invalid response. Please try again.\n")
 
