@@ -8,6 +8,24 @@ from book import *
 from patron import *
 
 class Library:
+    __all_books = []
+    __all_patrons = []
+
+    @staticmethod
+    def get_books():
+        return Library.__all_books
+    
+    @staticmethod
+    def add_book(book):
+        Library.__all_books.append(book)
+
+    @staticmethod
+    def list_all_books():
+        reply = "All books\n"
+        for book in Library.__all_books:
+            reply += book.get_title()
+
+""" class Library:
     def __init__(self, all_books=[], all_patrons=[]):
         self.__all_books = all_books
         self.__all_patrons = all_patrons
@@ -30,7 +48,7 @@ class Library:
     
     def list_all_patrons(self):
         for patron in self.__all_patrons:
-            print(patron)
+            print(patron) """
 
 if __name__ == "__main__":
     # testing
