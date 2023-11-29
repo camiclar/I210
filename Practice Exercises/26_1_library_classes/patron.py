@@ -7,7 +7,44 @@
 # set_name, add_book_to_list, set_is_checked_out
 
 class Patron:
-    def __init__(self, name)
+    def __init__(self, name):
+        self.__name = name
+        self.__book_list = []
+        self.__is_checked_out = False
+    
+    def get_name(self):
+        return self.__name
+    
+    def get_book_list(self):
+        return self.__book_list
+    
+    def get_is_checked_out(self):
+        return self.__is_checked_out
+    
+    def clear_book_list(self):
+        self.__book_list.clear()
+    
+    def set_name(self, new_name):
+        self.__name = new_name
+    
+    def add_book_to_list(self, book):
+        self.__book_list.append(book)
+    
+    def set_is_checked_out(self, new_is_checked_out):
+        self.__is_checked_out = new_is_checked_out
+    
+    def __str__(self):
+        output = "\n"
+        output += self.__name
+        output += "\n"
+
+        for book in self.__book_list:
+            output += book
+            output += "\n"
+        
+        output += f"Checked out: {self.__is_checked_out}"
+
+        return output
 
 
 
